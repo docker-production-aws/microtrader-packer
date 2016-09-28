@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_session_token": "{{env `AWS_SECURITY_TOKEN`}}",
+    "aws_source_ami": "ami-22a49541",
+    "aws_region": "ap-southeast-2",
+    "aws_instance_type": "t2.micro",
+    "aws_ssh_username": "ec2-user",
+    "aws_vpc_id":"vpc-675c2902",
+    "aws_subnet_id": "subnet-37633d52",
+    "aws_associate_public_ip_address": "true",
+    "aws_ami_name": "microtrader-ecs-base {{timestamp}}"
+},
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "token": "{{user `aws_session_token`}}",
+      "region": "{{user `aws_region`}}",
+      "source_ami": "{{user `aws_source_ami`}}",
+      "instance_type": "{{user `aws_instance_type`}}",
+      "ssh_username": "{{user `aws_ssh_username`}}",
+      "ami_name": "{{user `aws_ami_name`}}",
+      "vpc_id": "{{user `aws_vpc_id`}}",
+      "subnet_id": "{{user `aws_subnet_id`}}",
+      "associate_public_ip_address": "{{user `aws_associate_public_ip_address`}}",
+      "tags": {
+			  "Name": "ECS base AMI with CloudWatch Logs"
+      }
+    }
+  ],
+  "provisioners": [
+	  {
+      "type": "shell",
+      "script": "scripts/configure-timezone.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install-os-packages.sh"
+    },
+    {
+      "type": "file",
+      "source": "files/cfn-ecs.sh",
+      "destination": "/home/ec2-user/cfn-ecs.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/cleanup.sh"
+    }
+  ]
+}

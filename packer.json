@@ -42,8 +42,8 @@
     },
     {
       "type": "file",
-      "source": "files/cfn-ecs.sh",
-      "destination": "/home/ec2-user/cfn-ecs.sh"
+      "source": "files/firstrun.sh",
+      "destination": "/home/ec2-user/firstrun.sh"
     },
     {
       "type": "shell",

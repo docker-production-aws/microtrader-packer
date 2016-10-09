@@ -70,5 +70,3 @@ if [[ -n $PAUSE_TIME ]]
   echo "Pausing for $PAUSE_TIME seconds..."
   sleep $PAUSE_TIME
 fi
-
-
